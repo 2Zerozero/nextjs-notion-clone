@@ -14,7 +14,7 @@ const Navigation = () => {
   const sidebarRef = useRef<ElementRef<"aside">>(null); // 사이드바 가로 길이를 변경할때 사용
   const navbarRef = useRef<ElementRef<"div">>(null); // 사이드바 접었다 펼때 사용되는 네비게이션 바 버튼에 사용
   const [isResetting, setIsResetting] = useState(false); // 사이드바 접었다 다시 펼쳐서 원래 모양으로 돌릴 때 사용
-  const [isCollapsed, setIsCollapsed] = useState(false); // 사이드바가 접힌 상태인지 체크
+  const [isCollapsed, setIsCollapsed] = useState(isMobile); // 사이드바가 접힌 상태인지 체크
 
   useEffect(() => {
     if (isMobile) {
@@ -90,7 +90,7 @@ const Navigation = () => {
 
       sidebarRef.current.style.width = "0";
       navbarRef.current.style.setProperty("width", "100%");
-      navbarRef.current.style.setProperty("letf", "0");
+      navbarRef.current.style.setProperty("left", "0");
       setTimeout(() => setIsResetting(false), 300);
     }
   };
