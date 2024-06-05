@@ -3,6 +3,20 @@ import { v } from "convex/values"; // 데이터 타입과 정의
 import { mutation, query } from "./_generated/server"; // 데이터 수정 및 업데이트
 import { Doc, Id } from "./_generated/dataModel"; // 데이터 조회
 
+export const get = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not Authenticated User...");
+    }
+
+    const documents = await ctx.db.query("documents").collect();
+
+    return documents;
+  },
+});
+
 export const create = mutation({
   args: {
     title: v.string(),
