@@ -1,25 +1,39 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronsLeft, MenuIcon } from "lucide-react";
+import { ChevronsLeft, MenuIcon, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./UserItem";
 
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
+import Item from "./Item";
+import { toast } from "sonner";
 
 const Navigation = () => {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const documents = useQuery(api.documents.get);
+  const create = useMutation(api.documents.create);
 
   const isResizingRef = useRef(false); // 사이드바 가로 길이가 늘어나거나 줄어들때 사용
   const sidebarRef = useRef<ElementRef<"aside">>(null); // 사이드바 가로 길이를 변경할때 사용
   const navbarRef = useRef<ElementRef<"div">>(null); // 사이드바 접었다 펼때 사용되는 네비게이션 바 버튼에 사용
   const [isResetting, setIsResetting] = useState(false); // 사이드바 접었다 다시 펼쳐서 원래 모양으로 돌릴 때 사용
   const [isCollapsed, setIsCollapsed] = useState(isMobile); // 사이드바가 접힌 상태인지 체크
+
+  // 사이드바 Document 생성 핸들러
+  const handleCreate = () => {
+    const promise = create({ title: "test" });
+
+    toast.promise(promise, {
+      loading: "Creating a new Document...",
+      success: "New Document Created!!",
+      error: "Failed to create a new document",
+    });
+  };
 
   useEffect(() => {
     if (isMobile) {
@@ -122,6 +136,7 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
+          <Item onClick={handleCreate} label="New Documnet" icon={PlusCircle} />
         </div>
         <div className="mt-4">
           {documents?.map((document) => (
