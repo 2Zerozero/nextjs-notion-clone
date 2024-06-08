@@ -14,14 +14,13 @@ import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./UserItem";
 
 import { api } from "@/convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import Item from "./Item";
 import { toast } from "sonner";
 
 const Navigation = () => {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const documents = useQuery(api.documents.get);
   const create = useMutation(api.documents.create);
 
   const isResizingRef = useRef(false); // 사이드바 가로 길이가 늘어나거나 줄어들때 사용
@@ -148,11 +147,7 @@ const Navigation = () => {
           <Item onClick={() => {}} label="Settings" icon={Settings} />
           <Item onClick={handleCreate} label="New Documnet" icon={PlusCircle} />
         </div>
-        <div className="mt-4">
-          {documents?.map((document) => (
-            <p key={document._id}>{document.title}</p>
-          ))}
-        </div>
+        <div className="mt-4"></div>
         <div
           onMouseDown={handleMouseDown}
           onClick={resetWidth}
