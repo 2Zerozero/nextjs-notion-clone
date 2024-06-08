@@ -17,6 +17,7 @@ import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import Item from "./Item";
 import { toast } from "sonner";
+import DocumentList from "./DocumentList";
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -124,7 +125,7 @@ const Navigation = () => {
       <aside
         ref={sidebarRef}
         className={cn(
-          "group relative z-[99999] flex h-full w-60 flex-col overflow-y-auto bg-secondary",
+          "group/sidebar relative z-[99999] flex h-full w-60 flex-col overflow-y-auto bg-secondary",
           isResetting && "transition-all duration-300 ease-in-out",
           isMobile && "w-0",
         )}
@@ -147,7 +148,11 @@ const Navigation = () => {
           <Item onClick={() => {}} label="Settings" icon={Settings} />
           <Item onClick={handleCreate} label="New Documnet" icon={PlusCircle} />
         </div>
-        <div className="mt-4"></div>
+
+        {/* 문서 리스트 */}
+        <div className="mt-4">
+          <DocumentList />
+        </div>
         <div
           onMouseDown={handleMouseDown}
           onClick={resetWidth}
