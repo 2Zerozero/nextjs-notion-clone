@@ -1,7 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronsLeft, MenuIcon, PlusCircle } from "lucide-react";
+import {
+  ChevronsLeft,
+  MenuIcon,
+  PlusCircle,
+  Search,
+  Settings,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -134,8 +140,12 @@ const Navigation = () => {
         >
           <ChevronsLeft className="h-6 w-6" />
         </div>
+
+        {/* 사이드바 유저 정보 및 환경설정 */}
         <div>
           <UserItem />
+          <Item onClick={() => {}} label="Search" icon={Search} isSearch />
+          <Item onClick={() => {}} label="Settings" icon={Settings} />
           <Item onClick={handleCreate} label="New Documnet" icon={PlusCircle} />
         </div>
         <div className="mt-4">
