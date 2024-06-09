@@ -32,7 +32,7 @@ const Item = ({
   active,
   expanded,
   isSearch,
-  level,
+  level = 0,
   onExpand,
 }: ItemProps) => {
   const router = useRouter();
@@ -45,15 +45,15 @@ const Item = ({
     event.stopPropagation();
     if (!id) return;
 
-    const promise = create({ title: "Testcase", parentDocument: id }).then(
-      (documentId) => {
-        if (!expanded) {
-          onExpand?.();
-        }
-
-        // router.push(`/documents/${documentId}`);
-      },
-    );
+    const promise = create({
+      title: "Untitled",
+      parentDocument: id,
+    }).then((documentId) => {
+      if (!expanded) {
+        onExpand?.();
+      }
+      // router.push(`/documents/${documentId}`);
+    });
 
     toast.promise(promise, {
       loading: "Creating a new document...",
@@ -74,7 +74,7 @@ const Item = ({
     <div
       onClick={onClick}
       role="button"
-      style={{ paddingLeft: "12px" }}
+      style={{ paddingLeft: level ? `${level * 12 + 12}px` : "12px" }}
       className={cn(
         "group flex min-h-[27px] w-full items-center py-1 pr-3 text-sm font-medium text-muted-foreground hover:bg-primary/5",
         active && "bg-primaty/5 text-primary",

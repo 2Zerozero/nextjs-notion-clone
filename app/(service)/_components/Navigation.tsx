@@ -146,7 +146,7 @@ const Navigation = () => {
           <UserItem />
           <Item onClick={() => {}} label="Search" icon={Search} isSearch />
           <Item onClick={() => {}} label="Settings" icon={Settings} />
-          <Item onClick={handleCreate} label="New Documnet" icon={PlusCircle} />
+          <Item onClick={handleCreate} label="New Document" icon={PlusCircle} />
         </div>
 
         {/* 문서 리스트 */}
