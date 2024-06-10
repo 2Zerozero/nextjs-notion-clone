@@ -3,6 +3,52 @@ import { v } from "convex/values"; // 데이터 타입과 정의
 import { mutation, query } from "./_generated/server"; // 데이터 수정 및 업데이트
 import { Doc, Id } from "./_generated/dataModel"; // 데이터 조회
 
+export const archive = mutation({
+  args: { id: v.id("documents") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not Authenticated User...");
+    }
+
+    const userId = identity.subject;
+
+    const exisingDocument = await ctx.db.get(args.id);
+
+    if (!exisingDocument) {
+      throw new Error("Not Found");
+    }
+
+    if (exisingDocument.userId !== userId) {
+      throw new Error("Unauthorized User...");
+    }
+
+    const recursiveArchive = async (documentId: Id<"documents">) => {
+      const children = await ctx.db
+        .query("documents")
+        .withIndex("by_user_parent", (q) =>
+          q.eq("userId", userId).eq("parentDocument", documentId),
+        )
+        .collect();
+
+      for (const child of children) {
+        await ctx.db.patch(child._id, {
+          isArchived: true,
+        });
+
+        await recursiveArchive(child._id);
+      }
+    };
+
+    const document = await ctx.db.patch(args.id, {
+      isArchived: true,
+    });
+
+    return document;
+  },
+});
+
 export const getSidebar = query({
   args: {
     parentDocument: v.optional(v.id("documents")),
