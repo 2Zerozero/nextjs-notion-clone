@@ -4,9 +4,11 @@ import { cn } from "@/lib/utils";
 import {
   ChevronsLeft,
   MenuIcon,
+  Plus,
   PlusCircle,
   Search,
   Settings,
+  Trash,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react";
@@ -18,6 +20,11 @@ import { useMutation } from "convex/react";
 import Item from "./Item";
 import { toast } from "sonner";
 import DocumentList from "./DocumentList";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -141,18 +148,31 @@ const Navigation = () => {
           <ChevronsLeft className="h-6 w-6" />
         </div>
 
-        {/* 사이드바 유저 정보 및 환경설정 */}
+        {/* 검색 / 설정 / 문서 생성 */}
         <div>
           <UserItem />
           <Item onClick={() => {}} label="Search" icon={Search} isSearch />
           <Item onClick={() => {}} label="Settings" icon={Settings} />
           <Item onClick={handleCreate} label="New Document" icon={PlusCircle} />
         </div>
-
-        {/* 문서 리스트 */}
         <div className="mt-4">
           <DocumentList />
+          {/* 새로운 문서 생성 */}
+          <Item onClick={handleCreate} icon={Plus} label="Add a document" />
+          {/* 휴지통 */}
+          <Popover>
+            <PopoverTrigger className="mt-4 w-full">
+              <Item label="Trash" icon={Trash} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="w-72 p-0"
+              side={isMobile ? "bottom" : "right"}
+            >
+              <p>Trash Box</p>
+            </PopoverContent>
+          </Popover>
         </div>
+        {/* 사이드바 길이 조절 */}
         <div
           onMouseDown={handleMouseDown}
           onClick={resetWidth}

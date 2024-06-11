@@ -27,7 +27,7 @@ import { toast } from "sonner";
 // ItemProps는 이 컴포넌트가 받을 수 있는 여러 프로퍼티들을 정의
 interface ItemProps {
   label: string; // 아이템의 라벨 (표시될 텍스트)
-  onClick: () => void; // 아이템 클릭 시 실행될 함수
+  onClick?: () => void; // 아이템 클릭 시 실행될 함수
   icon: LucideIcon; // 아이템에 표시될 아이콘
   id?: Id<"documents">; // 아이템의 고유 식별자 (선택적)
   documentIcon?: string; // 문서와 관련된 아이콘 (선택적)
