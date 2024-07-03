@@ -1,8 +1,8 @@
 # NextJS 로 노션 클론코딩
 
-## 문제발생
+## 직접 겪은 문제점
 
-1. convex 와 clerk 사용할 때 에러 발생
+<h3>convex 와 clerk 사용할 때 에러 발생</h3>
 
 ---
 
@@ -17,3 +17,53 @@
 Provider를 만드는 이유는 클라이언트 컴포넌트를 서버 컴포넌트에서 사용하는 것이라고 알게되었다.
 
 ---
+
+<h3>config.mjs, config.js 차이점</h3>
+
+ES6 모듈 (ECMAScript Modules) - .mjs
+
+- 파일 확장자: ES6 모듈은 일반적으로 .mjs 확장자를 사용.
+- 모듈 시스템: ES6 모듈 시스템을 사용.
+- import와 export 키워드: 모듈에서 함수, 객체, 또는 원시 값을 가져오거나 내보내기 위해 import와 export 키워드를 사용.
+- 호이스팅: import 문은 파일 상단에 위치해야 하며, 호이스팅(hoisting)이 발생.
+- 엄격 모드: 모든 ES6 모듈은 자동으로 strict mode로 실행.
+- 비동기 처리: 모듈을 비동기적으로 로드할 수 있다.
+- 브라우저 및 Node.js: 최신 브라우저와 Node.js(버전 12 이상)에서 기본적으로 지원된다. Node.js에서는 package.json 파일에 "type": "module"을 설정하여 .js 파일을 ES6 모듈로 사용할 수도 있다.
+
+CommonJS 모듈 - .js
+
+- 파일 확장자: 일반적으로 .js 확장자를 사용.
+- 모듈 시스템: CommonJS 모듈 시스템을 사용.
+- require와 module.exports 키워드: 모듈에서 함수, 객체, 또는 원시 값을 가져오거나 내보내기 위해 require와 module.exports 키워드를 사용.
+- 동기 처리: require는 동기적으로 모듈을 로드.
+- 호이스팅 없음: require 문은 코드 내 어디에나 위치할 수 있다.
+- Node.js 중심: Node.js 환경에서 기본적으로 사용되는 모듈 시스템이다. 브라우저에서는 기본적으로 지원하지 않으며, 브라우저에서 사용하려면 번들러(예: Webpack, Browserify)가 필요하다.
+
+---
+
+<img src=upload/Error02.png>
+
+---
+
+```
+next.config.mjs
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "**",
+      },
+    ],
+  },
+};
+
+module.exports = nextConfig;
+
+
+```
+
+모듈로 변경하고는 mjs 로 사용하여 ReferenceError 가 발생했었다.
