@@ -46,7 +46,7 @@ const Navigation = () => {
 
   // 사이드바 Document 생성 핸들러
   const handleCreate = () => {
-    const promise = create({ title: "test" });
+    const promise = create({ title: "Untitled" });
 
     toast.promise(promise, {
       loading: "Creating a new Document...",
