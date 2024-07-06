@@ -67,3 +67,101 @@ module.exports = nextConfig;
 ```
 
 모듈로 변경하고는 mjs 로 사용하여 ReferenceError 가 발생했었다.
+
+<h3>BlockNote</h3>
+강의에서 설치하는 버전과 현재 버전이 달라 라이브러리의 문법이 달라져 고생했다.
+
+라이브러리의 버전을 강의와 같은 버전으로 내리니 Next.js 에서 오류가 발생하고
+
+모든 패키지 버전을 강의와 똑같이 다운그레이드하니 또 Next.js 에서 문제가 발생해 결국 공식문서와 구글링을 통하여 해결하였는데, 해결하고나니 이게 3일 정도 걸릴 일인가 싶기도하고.. Ha..
+
+기존 코드
+
+```
+
+"use client";
+
+import { useTheme } from "next-themes";
+import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
+import { BlockNoteView, useBlockNote } from "@blocknote/react";
+import "@blocknote/react/style.css";
+
+interface EditorProps {
+  onChange: (value: string) => void;
+  initialContent?: string;
+  editable?: boolean;
+}
+
+export const Editor = ({
+  onChange,
+  initialContent,
+  editable,
+}: EditorProps) => {
+  const { resolvedTheme } = useTheme();
+
+  const editor: BlockNoteEditor = useBlockNote({
+    editable,
+    initialContent: initialContent
+      ? (JSON.parse(initialContent) as PartialBlock[])
+      : undefined,
+    onEditorContentChange: (editor) => {
+      onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
+    },
+  });
+
+  return (
+    <div>
+      <BlockNoteView
+        editor={editor}
+        theme={resolvedTheme === "dark" ? "dark" : "light"}
+      />
+    </div>
+  );
+};
+
+```
+
+공식 문서와 스택오버플로우 등 검색을 통해 수정한 코드
+
+```
+
+"use client";
+
+import { useTheme } from "next-themes";
+import { PartialBlock } from "@blocknote/core";
+import { useCreateBlockNote } from "@blocknote/react";
+import "@blocknote/mantine/style.css";
+import { BlockNoteView } from "@blocknote/mantine";
+
+interface EditorProps {
+  onChange: (value: any) => void;
+  initialContent?: string;
+  editable?: boolean;
+}
+
+export const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
+  const { resolvedTheme } = useTheme();
+
+  const editor = useCreateBlockNote({
+    initialContent: initialContent
+      ? (JSON.parse(initialContent) as PartialBlock[])
+      : undefined,
+  });
+
+  const handleChange = () => {
+    onChange(JSON.stringify(editor.document));
+  };
+
+  return (
+    <div>
+      <BlockNoteView
+        editor={editor}
+        onChange={handleChange}
+        editable={editable}
+        theme={resolvedTheme === "dark" ? "dark" : "light"}
+      />
+    </div>
+  );
+};
+
+```
