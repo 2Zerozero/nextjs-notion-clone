@@ -34,6 +34,8 @@ export const Menu = ({ documentId }: MenuProps) => {
       success: "Document moved to trash!",
       error: "Failed to archive document...",
     });
+
+    router.push("/documents");
   };
 
   return (

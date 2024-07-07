@@ -46,7 +46,7 @@ const Navbar = ({ isCollapsed, onResetWidth }: NavbarProps) => {
             className="h-6 w-6 text-muted-foreground"
           />
         )}
-        <div className="flex w-full items-center justify-between">
+        <div className="flex w-full items-center justify-between dark:text-white">
           <Title initialData={document} />
           <div className="flex items-center gap-x-2">
             <Publish initialData={document} />

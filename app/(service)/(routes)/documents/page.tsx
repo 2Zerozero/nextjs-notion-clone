@@ -43,7 +43,7 @@ const DocumentsPage = () => {
         width="300"
         alt="document-image"
       />
-      <h2 className="text-lg font-medium">
+      <h2 className="text-lg font-medium dark:text-white">
         Welcom to {user?.firstName}&apos;s Notion
       </h2>
       <Button onClick={onCreate}>
