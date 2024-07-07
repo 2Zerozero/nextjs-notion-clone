@@ -1,20 +1,20 @@
 "use client";
 
+import { api } from "@/convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
+import { Id } from "@/convex/_generated/dataModel";
 import Toolbar from "@/components/Toolbar";
 import { Cover } from "@/components/cover";
-import { Editor } from "@/components/editor";
 import { Skeleton } from "@/components/ui/skeleton";
-import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
+import { Editor } from "@/components/editor";
 
-interface DocumnetIdPageProps {
+interface DocumentIdPageProps {
   params: {
     documentId: Id<"documents">;
   };
 }
 
-const DocumentIdPage = ({ params }: DocumnetIdPageProps) => {
+const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId,
   });
@@ -47,6 +47,7 @@ const DocumentIdPage = ({ params }: DocumnetIdPageProps) => {
   if (document === null) {
     return <div>Document Not Found...</div>;
   }
+
   return (
     <div className="pb-40">
       <Cover url={document.coverImage} />
